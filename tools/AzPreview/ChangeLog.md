@@ -204,6 +204,12 @@
 #### Az.Synapse 3.0.8
 * Upgraded 'Microsoft.DataTransfer.Gateway.Encryption' to '5.29.8499.2'
 
+#### Az.CodeSigning 0.2.0
+* Upgraded 'Microsoft.DataTransfer.Gateway.Encryption' to '5.29.8499.2'
+
+#### Az.DataLakeStore 1.4.0
+* Upgraded 'Microsoft.DataTransfer.Gateway.Encryption' to '5.29.8499.2'
+
 ## 11.6.0 - April 2024
 #### Az.Accounts 2.19.0
 > [!IMPORTANT]
