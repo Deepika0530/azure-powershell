@@ -1,69 +1,65 @@
 ---
 external help file:
 Module Name: Az.AksArc
-online version: https://learn.microsoft.com/powershell/module/az.aksarc/new-azaksarcnodepool
+online version: https://learn.microsoft.com/powershell/module/az.aksarc/update-azaksarcnodepool
 schema: 2.0.0
 ---
 
-# New-AzAksArcNodepool
+# Update-AzAksArcNodepool
 
 ## SYNOPSIS
-Create the agent pool in the provisioned cluster
+Update the agent pool in the provisioned cluster
 
 ## SYNTAX
 
-### CreateExpanded (Default)
+### UpdateExpanded (Default)
 ```
-New-AzAksArcNodepool -ClusterName <String> -Name <String> -ResourceGroupName <String>
- [-SubscriptionId <String>] [-Count <Int32>] [-EnableAutoScaling] [-MaxCount <Int32>] [-MinCount <Int32>]
- [-NodeLabel <Hashtable>] [-NodeTaint <String[]>] [-OSSku <String>] [-OSType <String>] [-Tag <Hashtable>]
- [-VMSize <String>] [-AsJob] [-NoWait] [-Confirm] [-WhatIf] [<CommonParameters>]
+Update-AzAksArcNodepool -ClusterName <String> -Name <String> -ResourceGroupName <String>
+ [-SubscriptionId <String>] [-Count <Int32>] [-NodeLabel <Hashtable>] [-NodeTaint <String[]>]
+ [-Tag <Hashtable>] [-VMSize <String>] [-AsJob] [-NoWait] [-Confirm] [-WhatIf] [<CommonParameters>]
 ```
 
 ### AutoScaling
 ```
-New-AzAksArcNodepool -ClusterName <String> -Name <String> -ResourceGroupName <String> -EnableAutoScaling
- -MaxCount <Int32> -MinCount <Int32> [-SubscriptionId <String>] [-AsJob] [-NoWait] [-Confirm] [-WhatIf]
+Update-AzAksArcNodepool -ClusterName <String> -Name <String> -ResourceGroupName <String> -EnableAutoScaling
+ -MaxCount <Int32> -MinCount <Int32> [-SubscriptionId <String>] [-Count <Int32>] [-NodeLabel <Hashtable>]
+ [-NodeTaint <String[]>] [-Tag <Hashtable>] [-VMSize <String>] [-AsJob] [-NoWait] [-Confirm] [-WhatIf]
  [<CommonParameters>]
 ```
 
 ### CreateViaIdentityExpanded
 ```
-New-AzAksArcNodepool -ClusterName <String> -InputObject <IAksArcIdentity> -Name <String>
- -ResourceGroupName <String> [-SubscriptionId <String>] [-AsJob] [-NoWait] [-Confirm] [-WhatIf]
+Update-AzAksArcNodepool -ClusterName <String> -InputObject <IAksArcIdentity> -Name <String>
+ -ResourceGroupName <String> [-SubscriptionId <String>] [-Count <Int32>] [-NodeLabel <Hashtable>]
+ [-NodeTaint <String[]>] [-Tag <Hashtable>] [-VMSize <String>] [-AsJob] [-NoWait] [-Confirm] [-WhatIf]
  [<CommonParameters>]
 ```
 
-### CreateViaJsonFilePath
-```
-New-AzAksArcNodepool -ClusterName <String> -Name <String> -ResourceGroupName <String> -JsonFilePath <String>
- [-SubscriptionId <String>] [-AsJob] [-NoWait] [-Confirm] [-WhatIf] [<CommonParameters>]
-```
-
-### CreateViaJsonString
-```
-New-AzAksArcNodepool -ClusterName <String> -Name <String> -ResourceGroupName <String> -JsonString <String>
- [-SubscriptionId <String>] [-AsJob] [-NoWait] [-Confirm] [-WhatIf] [<CommonParameters>]
-```
-
 ## DESCRIPTION
-Create the agent pool in the provisioned cluster
+Update the agent pool in the provisioned cluster
 
 ## EXAMPLES
 
-### Example 1: Create a nodepool
+### Example 1: Scale up nodes in provisioned cluster nodepool. 
 ```powershell
-New-AzAksArcNodepool -ClusterName azps_test_cluster -ResourceGroupName azps_test_group -Name azps_test_nodepool_example
+Update-AzAksArcNodepool -ClusterName azps_test_cluster -ResourceGroupName azps_test_group -Name azps_test_nodepool_example -Count 3
 ```
 
-Adds a nodepool in the provisioned cluster with default configuration.
+Scales up the number of nodes in the provisioned cluster nodepool.
 
-### Example 2: Create a nodepool with 3 nodes
+### Example 2: Update tags in nodepool
 ```powershell
-New-AzAksArcNodepool -ClusterName azps_test_cluster -ResourceGroupName azps_test_group -Name azps_test_nodepool_example -Count 3
+Update-AzAksArcNodepool -ClusterName azps_test_cluster -ResourceGroupName azps_test_group -Name azps_test_nodepool_example -Tag @{'key1'= 1; 'key2'= 2}
 ```
 
-Adds a nodepool in the provisioned cluster with 3 worker nodes.
+Adds the specified tags to the nodepool resource.
+
+### Example 3: Enable autoscaling in nodepool
+```powershell
+Update-AzAksArcNodepool -ClusterName azps_test_cluster -ResourceGroupName azps_test_group -Name azps_test_nodepool_example -EnableAutoScaling -MinCount 1 -MaxCount 5
+```
+
+Enables autoscaling in the nodepool with specified MinCount and MaxCount.
 
 ## PARAMETERS
 
@@ -103,7 +99,7 @@ The default value is 1.
 
 ```yaml
 Type: System.Int32
-Parameter Sets: CreateExpanded
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -119,7 +115,7 @@ Default value is false
 
 ```yaml
 Type: System.Management.Automation.SwitchParameter
-Parameter Sets: AutoScaling, CreateExpanded
+Parameter Sets: AutoScaling
 Aliases:
 
 Required: True
@@ -144,42 +140,12 @@ Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
-### -JsonFilePath
-Path of Json file supplied to the Create operation
-
-```yaml
-Type: System.String
-Parameter Sets: CreateViaJsonFilePath
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -JsonString
-Json string supplied to the Create operation
-
-```yaml
-Type: System.String
-Parameter Sets: CreateViaJsonString
-Aliases:
-
-Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
 ### -MaxCount
 The maximum number of nodes for auto-scaling
 
 ```yaml
 Type: System.Int32
-Parameter Sets: AutoScaling, CreateExpanded
+Parameter Sets: AutoScaling
 Aliases:
 
 Required: True
@@ -194,7 +160,7 @@ The minimum number of nodes for auto-scaling
 
 ```yaml
 Type: System.Int32
-Parameter Sets: AutoScaling, CreateExpanded
+Parameter Sets: AutoScaling
 Aliases:
 
 Required: True
@@ -224,7 +190,7 @@ The node labels to be persisted across all nodes in agent pool.
 
 ```yaml
 Type: System.Collections.Hashtable
-Parameter Sets: CreateExpanded
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -240,7 +206,7 @@ For example, key=value:NoSchedule.
 
 ```yaml
 Type: System.String[]
-Parameter Sets: CreateExpanded
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -256,38 +222,6 @@ Run the command asynchronously
 ```yaml
 Type: System.Management.Automation.SwitchParameter
 Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OSSku
-Specifies the OS SKU used by the agent pool.
-The default is CBLMariner if OSType is Linux.
-The default is Windows2019 when OSType is Windows.
-
-```yaml
-Type: System.String
-Parameter Sets: CreateExpanded
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -OSType
-The particular KubernetesVersion Image OS Type (Linux, Windows)
-
-```yaml
-Type: System.String
-Parameter Sets: CreateExpanded
 Aliases:
 
 Required: False
@@ -333,7 +267,7 @@ Resource tags
 
 ```yaml
 Type: System.Collections.Hashtable
-Parameter Sets: CreateExpanded
+Parameter Sets: (All)
 Aliases:
 
 Required: False
@@ -348,7 +282,7 @@ The VM sku size of the agent pool node VMs.
 
 ```yaml
 Type: System.String
-Parameter Sets: CreateExpanded
+Parameter Sets: (All)
 Aliases:
 
 Required: False
