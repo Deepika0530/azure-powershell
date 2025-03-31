@@ -465,6 +465,7 @@ function Save-PackageLocally {
     $ModuleName = $module['ModuleName']
     $RequiredVersion = $module['RequiredVersion']
 
+
     # Only check for the modules that specifies = required exact dependency version
     if ($RequiredVersion -ne $null) {
         Write-Output "Checking for required module $ModuleName, $RequiredVersion"
@@ -472,10 +473,14 @@ function Save-PackageLocally {
             Write-Output "Required dependency $ModuleName, $RequiredVersion found in the repo $TempRepo"
         } else {
             Write-Warning "Required dependency $ModuleName, $RequiredVersion not found in the repo $TempRepo"
-            Write-Output "Downloading the package from PsGallery to the path $TempRepoPath"
-            # We try to download the package from the PsGallery as we are likely intending to use the existing version of the module.
-            # If the module not found in psgallery, the following commnad would fail and hence publish to local repo process would fail as well
-            Save-Package -Name $ModuleName -RequiredVersion $RequiredVersion -ProviderName Nuget -Path $TempRepoPath -Source https://www.powershellgallery.com/api/v2 | Out-Null
+            Write-Output "Downloading the package from $PSRepositoryUrl to the path $TempRepoPath"
+            # We try to download the package from the PSRepositoryUrl as we are likely intending to use the existing version of the module.
+            # If the module not found in PSRepositoryUrl, the following command would fail and hence publish to local repo process would fail as well
+            if (Test-Path Env:\DEFAULT_PS_REPOSITORY_URL) {
+                Save-PSResource -Name $ModuleName -Version $RequiredVersion -Path $TempRepoPath -Repository $Env:DEFAULT_PS_REPOSITORY_NAME -Credential $credentialsObject -AsNupkg -TrustRepository
+            } else {
+                Save-PSResource -Name $ModuleName -Version $RequiredVersion -Path $TempRepoPath -Repository PSGallery -AsNupkg -TrustRepository
+            }
             $NupkgFilePath = Join-Path -Path $TempRepoPath -ChildPath "$ModuleName.$RequiredVersion.nupkg"
             $ModulePaths = $env:PSModulePath -split ';'
             $DestinationModulePath = [System.IO.Path]::Combine($ModulePaths[0], $ModuleName, $RequiredVersion)
